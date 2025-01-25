@@ -16,7 +16,7 @@ async function GetAllTitles(): Promise<TitleItem[]> {
 
     // Create the request object, which will be a RequestInfo type. 
     // Here, we will pass in the URL as well as the options object as parameters.
-    const request: RequestInfo = new Request('http://106.51.61.53:8080/getAllTitles', {
+    const request: RequestInfo = new Request('http://<IPAddress>/getAllTitles', {
         method: 'GET',
         headers: headers
     })
