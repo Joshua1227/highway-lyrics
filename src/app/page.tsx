@@ -2,11 +2,15 @@
 // import Image from "next/image";
 import { useEffect, useState } from "react";
 import { GetAllTitles, GetSongById, SearchSongs } from "../utils/apiCalls";
-import { UniqueSong } from "../utils/models";
+import { Song } from "../utils/models";
 
 export default function Home() {
-	// TODO maybe convert titleList to a ref
-	const [titleList, setTitleList] = useState<UniqueSong[]>([]);
+	// TODO maybe convert mapState to a ref
+	const [songMap, setSongMap] = useState(new Map<string, Song>());
+
+	const updateSongMap = (key: string, value: Song) => {
+		setSongMap((map) => new Map(map.set(key, value)));
+	};
 
 	const getSongById = async (songId: string) => {
 		const data = await GetSongById(songId);
@@ -25,7 +29,9 @@ export default function Home() {
 	useEffect(() => {
 		(async () => {
 			const localTitleList = await GetAllTitles();
-			setTitleList(localTitleList);
+			localTitleList.forEach((value) => {
+				updateSongMap(value.id, { title: value.title, lyrics: value.lyrics });
+			});
 		})();
 	}, []);
 
@@ -38,10 +44,11 @@ export default function Home() {
 		<>
 			<h1>Highway Lyrics (Work in Progress)</h1>
 			<ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-				{titleList.map((titleItem) => {
+				{Array.from(songMap.entries()).map((entry) => {
+					const [key, value] = entry;
 					return (
-						<li key={titleItem.id} className="mb-2">
-							{titleItem.title}
+						<li key={key} className="mb-2">
+							{value.title}
 						</li>
 					);
 				})}
