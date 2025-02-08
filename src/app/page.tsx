@@ -1,20 +1,51 @@
+"use client";
 // import Image from "next/image";
-import GetAllTitles from "../utils/apiCalls"
+import { useEffect, useState } from "react";
+import { GetAllTitles, GetSongById, SearchSongs } from "../utils/apiCalls";
+import { UniqueSong } from "../utils/models";
 
-export default async function Home() {
+export default function Home() {
+	// TODO maybe convert titleList to a ref
+	const [titleList, setTitleList] = useState<UniqueSong[]>([]);
 
-  const data = await GetAllTitles()
+	const getSongById = async (songId: string) => {
+		const data = await GetSongById(songId);
+		return data;
+	};
 
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <h1>Highway Lyrics (Work in Progress)</h1>
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-        {data.map((titleItem) => {
-          return (<li key={titleItem.id} className="mb-2">{titleItem.title}</li>)
-        })}
-        </ol>
-      </main>
-    </div>
-  );
+	const searchSongs = async (key: string) => {
+		const data = await SearchSongs(key);
+		return data;
+	};
+
+	// TODO remove when doing actual function calls
+	getSongById("675eb05ce5801142d59ef8e6");
+	searchSongs("ALL THE EARTH WILL SING YOUR PRAISES");
+
+	useEffect(() => {
+		(async () => {
+			const localTitleList = await GetAllTitles();
+			setTitleList(localTitleList);
+		})();
+	}, []);
+
+	// const test = await GetSongById("675eb05ce5801142d59ef8e6")
+	// const test = await SearchSongs("EVERY MOVE I MAKE")
+
+	// console.log("Test: ", test)
+
+	return (
+		<>
+			<h1>Highway Lyrics (Work in Progress)</h1>
+			<ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
+				{titleList.map((titleItem) => {
+					return (
+						<li key={titleItem.id} className="mb-2">
+							{titleItem.title}
+						</li>
+					);
+				})}
+			</ol>
+		</>
+	);
 }

@@ -8,6 +8,9 @@
 		"workbench.colorTheme": "Bearded Theme Coffee Reversed",
 		"workbench.iconTheme": "vs-seti",
 		"react-native-tools.networkInspector.consoleLogsColorTheme": "Dark",
-		"material-icon-theme.activeIconPack": "react"
+		"material-icon-theme.activeIconPack": "react",
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.formatOnSave": true,
+		"editor.formatOnType": true
 	}
 }
