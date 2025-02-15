@@ -17,11 +17,11 @@ export async function GetAllTitles(): Promise<UniqueSong[]> {
         method: 'GET'
     })
 
-    
+
     // For our example, the data is stored on a static `users.json` file
     const res = await fetch(request)
     const jsonifiedRes = await res.json()
-    console.log("DATA: ",jsonifiedRes)
+    console.log("DATA: ", jsonifiedRes)
     return jsonifiedRes as UniqueSong[]
 }
 
@@ -43,11 +43,11 @@ export async function GetSongById(songId: string): Promise<Song> {
     // For our example, the data is stored on a static `users.json` file
     const res = await fetch(request)
     const jsonifiedRes = await res.json()
-    console.log("DATA: ",jsonifiedRes)
+    console.log("DATA: ", jsonifiedRes)
     return jsonifiedRes as Song
 }
 
-export async function SearchSongs(key: string): Promise<Song[]> {
+export async function SearchSongs(key: string): Promise<UniqueSong[]> {
 
     // We can use the `Headers` constructor to create headers
     // and assign it as the type of the `headers` variable
@@ -65,6 +65,6 @@ export async function SearchSongs(key: string): Promise<Song[]> {
     // For our example, the data is stored on a static `users.json` file
     const res = await fetch(request)
     const jsonifiedRes = await res.json()
-    console.log("DATA: ",jsonifiedRes)
-    return jsonifiedRes as Song[]
+    console.log("DATA: ", jsonifiedRes)
+    return jsonifiedRes as UniqueSong[]
 }
