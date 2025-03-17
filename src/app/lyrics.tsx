@@ -8,9 +8,12 @@ export default function Lyrics({
 	filteredSongs: Map<string, Song>;
 }) {
 	return (
-		<p>
-			{filteredSongs.get(id)?.title}
-			{filteredSongs.get(id)?.lyrics}
-		</p>
+		<>
+			<pre>
+				{filteredSongs.get(id)?.title}
+				<br></br>
+				{filteredSongs.get(id)?.lyrics}
+			</pre>
+		</>
 	);
 }
