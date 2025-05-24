@@ -1,6 +1,4 @@
 import { UniqueSong } from "@/utils/models";
-import { GetStaticProps } from "next";
-import clientPromise from "../lib/mongodb";
 
 interface SongList {
   songs: UniqueSong[];
@@ -19,28 +17,6 @@ export default function List({ songs }: SongList) {
     </div>
   );
 }
-
-export const getStaticProps: GetStaticProps<SongList> = async () => {
-  try {
-    const client = await clientPromise;
-    const db = client.db("sample_mflix");
-    const songs = await db
-      .collection("lyrics")
-      .find({})
-      .sort({ title: 1 })
-      .toArray();
-
-    return {
-      props: { songs: JSON.parse(JSON.stringify(songs)) },
-    };
-  } catch (e) {
-    console.error(e);
-
-    return {
-      props: { songs: [] },
-    };
-  }
-};
 
 // {Array.from(filteredSongs.entries()).map((entry) => {
 //   const [key, value] = entry;

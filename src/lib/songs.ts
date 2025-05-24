@@ -1,4 +1,4 @@
-import { Collection, Db, MongoClient } from "mongodb";
+import { Collection, Db, MongoClient, ObjectId } from "mongodb";
 import clientPromise from "./mongodb";
 
 let db: Db;
@@ -38,5 +38,43 @@ export async function getAllSongs() {
   } catch (error) {
     console.error("Error fetching songs:", error);
     return { error: "Failed to fetch songs" };
+  }
+}
+
+export async function getSongById(songId: string) {
+  try {
+    if (!songs) {
+      await init();
+    }
+    const query = { _id: new ObjectId(songId) };
+    const songWithLyrics = await songs.findOne(query);
+    return { song: songWithLyrics };
+  } catch (error) {
+    console.error("Error fetching song:", error);
+    return { error: "Failed to fetch song" };
+  }
+}
+
+export async function searchSongs(searchKey: string) {
+  try {
+    if (!songs) {
+      await init();
+    }
+    const songWithLyrics = await songs
+      .aggregate([
+        { $match: { $text: { $search: searchKey } } },
+        {
+          $addFields: {
+            score: { $meta: "textScore" },
+          },
+        },
+        { $match: { score: { $gte: 0.5 } } },
+        { $sort: { score: { $meta: "textScore" } } },
+      ])
+      .toArray();
+    return { song: songWithLyrics };
+  } catch (error) {
+    console.error("Error searching songs:", error);
+    return { error: "Failed to search songs" };
   }
 }
