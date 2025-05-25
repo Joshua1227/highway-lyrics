@@ -4,7 +4,6 @@ import { useEffect, useState, MouseEvent } from "react";
 import { Song, UniqueSong } from "../utils/models";
 import Search from "./search";
 import Lyrics from "./lyrics";
-import { GetAllTitles } from "@/utils/apiCalls";
 
 export default function Home() {
   // TODO maybe convert songMap to a ref
@@ -53,11 +52,12 @@ export default function Home() {
           const responseSong = await response.json();
           if (responseSong.song) {
             const song = responseSong.song as Song;
-            const updatedSong = {
-              ...songMap.get(songId),
+            const originalSong = songMap.get(songId);
+            if (!originalSong) return;
+            const updatedSong: Song = {
+              title: originalSong.title,
+              number: originalSong.number,
               lyrics: song.lyrics,
-              number: song.number,
-              title: song.title,
             };
             setFilteredSongs((prev) => new Map(prev).set(songId, updatedSong));
           }
@@ -88,8 +88,10 @@ export default function Home() {
             );
           })}
         </ol>
+        <div>
+          <Lyrics id={currentSong} filteredSongs={filteredSongs} />
+        </div>
       </div>
-      <Lyrics id={currentSong} filteredSongs={filteredSongs} />
     </>
   );
 }
