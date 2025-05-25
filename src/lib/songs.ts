@@ -32,7 +32,7 @@ export async function getAllSongs() {
     const allSongs = await songs
       .find({})
       .map((song) => ({ ...song, _id: song._id.toString() }))
-      .sort({ title: -1 })
+      .sort({ title: 1 })
       .toArray();
     return { songs: allSongs };
   } catch (error) {

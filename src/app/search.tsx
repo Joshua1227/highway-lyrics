@@ -73,7 +73,12 @@ export default function Search({
           placeholder="Search Songs"
           onChange={handleInputChange}
         ></input>
-        <button type="submit">Search</button>
+        <button
+          type="submit"
+          className="mx-3 bg-amber-300 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-full"
+        >
+          Search
+        </button>
       </form>
     </search>
   );

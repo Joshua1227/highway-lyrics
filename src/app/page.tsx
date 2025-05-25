@@ -69,10 +69,12 @@ export default function Home() {
 
   return (
     <>
-      <Search setFilteredSongs={setFilteredSongs} allSongs={songMap}></Search>
-      <h1>Highway Lyrics (Work in Progress)</h1>
+      <div className="flex justify-between items-center mb-4 px-4 py-2 bg-gray-100 dark:bg-gray-800">
+        <Search setFilteredSongs={setFilteredSongs} allSongs={songMap}></Search>
+      </div>
+      <h1 className="text-2xl font-bold">Highway Lyrics(Work in Progress)</h1>
       <div className="grid grid-cols-2 gap-2">
-        <ol className="list-inside list-none text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
+        <ol className="bg-stone-300 list-inside list-none text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)] overflow-y-auto h-[calc(100vh-8rem)] p-4 rounded-lg">
           {Array.from(filteredSongs.entries()).map((entry) => {
             const [key, value] = entry;
             return (
@@ -88,7 +90,7 @@ export default function Home() {
             );
           })}
         </ol>
-        <div>
+        <div className="bg-slate-400 p-4 rounded-lg overflow-y-auto h-[calc(100vh-8rem)] text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)] text-white">
           <Lyrics id={currentSong} filteredSongs={filteredSongs} />
         </div>
       </div>
