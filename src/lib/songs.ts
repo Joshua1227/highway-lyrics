@@ -46,6 +46,7 @@ export async function getSongById(songId: string) {
     if (!songs) {
       await init();
     }
+    console.log("Fetching song with ID:", songId);
     const query = { _id: new ObjectId(songId) };
     const songWithLyrics = await songs.findOne(query);
     return { song: songWithLyrics };

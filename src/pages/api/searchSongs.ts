@@ -3,7 +3,7 @@ import { searchSongs } from "@/lib/songs";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {
-    const searchKey = req.query.songId as string;
+    const searchKey = req.query.key as string;
     if (!searchKey) {
       return res.status(400).json({ error: "Search Key is required" });
     }

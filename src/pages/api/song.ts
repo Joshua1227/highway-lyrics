@@ -3,6 +3,7 @@ import { getSongById } from "@/lib/songs";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {
+    console.log("Received GET request for song");
     const songId = req.query.songId as string;
     if (!songId) {
       return res.status(400).json({ error: "Song ID is required" });

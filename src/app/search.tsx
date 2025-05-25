@@ -20,11 +20,17 @@ export default function Search({
     setSearchQuery(event.target.value);
   };
   const searchSongs = async (key: string) => {
-    const data = await fetch(`/api/searchSongs?key=${encodeURIComponent(key)}`);
-    if (!data.ok) {
-      throw new Error(`HTTP error! status: ${data.status}`);
+    const response = await fetch(
+      `/api/searchSongs?key=${encodeURIComponent(key)}`
+    );
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
-    return (await data.json()) as UniqueSong[];
+    const responseJson = await response.json();
+    if (responseJson.songs) {
+      return responseJson.songs as UniqueSong[];
+    }
+    return [];
   };
 
   const updateFilteredSongs = (e: FormEvent<HTMLFormElement>) => {

@@ -3,6 +3,7 @@ import { getAllSongs } from "@/lib/songs";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {
+    console.log("Received GET request for all songs");
     try {
       const { songs, error } = await getAllSongs();
       if (error) {

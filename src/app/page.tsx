@@ -4,6 +4,7 @@ import { useEffect, useState, MouseEvent } from "react";
 import { Song, UniqueSong } from "../utils/models";
 import Search from "./search";
 import Lyrics from "./lyrics";
+import { GetAllTitles } from "@/utils/apiCalls";
 
 export default function Home() {
   // TODO maybe convert songMap to a ref
@@ -18,18 +19,20 @@ export default function Home() {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      const songs = (await response.json()) as UniqueSong[];
-      // const localTitleList = await GetAllTitles();
-      const localSongMap = new Map<string, Song>();
-      songs.forEach((value, index) => {
-        localSongMap.set(value._id, {
-          title: value.title,
-          lyrics: "",
-          number: index + 1,
+      const responseSongs = await response.json();
+      if (responseSongs.songs) {
+        const localSongMap = new Map<string, Song>();
+
+        (responseSongs.songs as UniqueSong[]).forEach((value, index) => {
+          localSongMap.set(value._id, {
+            title: value.title,
+            lyrics: "",
+            number: index + 1,
+          });
         });
-      });
-      setSongMap(localSongMap);
-      setFilteredSongs(localSongMap);
+        setSongMap(localSongMap);
+        setFilteredSongs(localSongMap);
+      }
     })();
   }, []);
 
@@ -41,19 +44,23 @@ export default function Home() {
       const songId = (e.target as HTMLButtonElement).value;
       if (!songMap.get(songId)?.lyrics) {
         (async () => {
-          const response = await fetch(`/api/song/${songId}`);
+          const response = await fetch(
+            `/api/song?songId=${encodeURIComponent(songId)}`
+          );
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
-          const song = (await response.json()) as Song;
-          const updatedSong = {
-            ...songMap.get(songId),
-            lyrics: song.lyrics,
-            number: song.number,
-            title: song.title,
-          };
-          setSongMap((prev) => new Map(prev).set(songId, updatedSong));
-          setFilteredSongs((prev) => new Map(prev).set(songId, updatedSong));
+          const responseSong = await response.json();
+          if (responseSong.song) {
+            const song = responseSong.song as Song;
+            const updatedSong = {
+              ...songMap.get(songId),
+              lyrics: song.lyrics,
+              number: song.number,
+              title: song.title,
+            };
+            setFilteredSongs((prev) => new Map(prev).set(songId, updatedSong));
+          }
         })();
       }
       setCurrentSong(songId);
