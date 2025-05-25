@@ -4,7 +4,6 @@ export interface TitleItem {
 }
 
 export interface Song {
-  // TODO: Add song numbers. populate when fetching titles (Assuming they're in order)
   number: number;
   title: string;
   lyrics: string;

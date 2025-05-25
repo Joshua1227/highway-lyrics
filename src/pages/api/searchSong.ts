@@ -1,18 +1,18 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { getSongById } from "@/lib/songs";
+import { searchSongs } from "@/lib/songs";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {
-    const songId = req.query.songId as string;
-    if (!songId) {
-      return res.status(400).json({ error: "Song ID is required" });
+    const searchKey = req.query.songId as string;
+    if (!searchKey) {
+      return res.status(400).json({ error: "Search Key is required" });
     }
     try {
-      const { song, error } = await getSongById(songId);
+      const { songs, error } = await searchSongs(searchKey);
       if (error) {
         throw new Error(error);
       }
-      return res.status(200).json({ song });
+      return res.status(200).json({ songs });
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "An unknown error occurred";

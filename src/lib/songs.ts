@@ -60,7 +60,7 @@ export async function searchSongs(searchKey: string) {
     if (!songs) {
       await init();
     }
-    const songWithLyrics = await songs
+    const matchingSongs = await songs
       .aggregate([
         { $match: { $text: { $search: searchKey } } },
         {
@@ -72,7 +72,7 @@ export async function searchSongs(searchKey: string) {
         { $sort: { score: { $meta: "textScore" } } },
       ])
       .toArray();
-    return { song: songWithLyrics };
+    return { songs: matchingSongs };
   } catch (error) {
     console.error("Error searching songs:", error);
     return { error: "Failed to search songs" };

@@ -1,5 +1,4 @@
-import { SearchSongs } from "@/utils/apiCalls";
-import { Song } from "@/utils/models";
+import { Song, UniqueSong } from "@/utils/models";
 import {
   ChangeEvent,
   Dispatch,
@@ -21,8 +20,11 @@ export default function Search({
     setSearchQuery(event.target.value);
   };
   const searchSongs = async (key: string) => {
-    const data = await SearchSongs(key);
-    return data;
+    const data = await fetch(`/api/searchSongs?key=${encodeURIComponent(key)}`);
+    if (!data.ok) {
+      throw new Error(`HTTP error! status: ${data.status}`);
+    }
+    return (await data.json()) as UniqueSong[];
   };
 
   const updateFilteredSongs = (e: FormEvent<HTMLFormElement>) => {
