@@ -59,6 +59,9 @@ export default function Search({
         setFilteredSongs(localFilteredSongs);
         console.log("localFilteredSongs : \n", localFilteredSongs);
       })();
+    } else {
+      setFilteredSongs(allSongs);
+      console.log("No search query provided, resetting to all songs.");
     }
   };
 
