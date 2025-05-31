@@ -31,7 +31,7 @@ export default function Lyrics({
 
   const handleCopyClick = () => {
     setCopyClick(true);
-    navigator.clipboard.writeText(songText).then(() => {
+    navigator.clipboard.writeText(songText.trim()).then(() => {
       setTimeout(() => {
         setCopyClick(false);
       }, 2000);
