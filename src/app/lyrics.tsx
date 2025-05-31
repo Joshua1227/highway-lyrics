@@ -22,10 +22,7 @@ export default function Lyrics({
     songTitle = "Unknown Title";
   }
 
-  let songLyrics = filteredSongs.get(id)?.lyrics;
-  if (!songLyrics) {
-    songLyrics = "Lyrics not available";
-  }
+  const songLyrics = filteredSongs.get(id)?.lyrics;
 
   const songText = `${songTitle}\n\n${songLyrics}`;
 

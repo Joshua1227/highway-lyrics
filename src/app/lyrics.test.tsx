@@ -21,14 +21,6 @@ describe("Lyrics component", () => {
     expect(screen.getByText(/loading lyrics/i)).toBeInTheDocument();
   });
 
-  it("renders 'Lyrics not available' when lyrics is falsy", () => {
-    const songs = getSongsMap({
-      "1": { title: "Test Song", lyrics: undefined as any, number: 1 },
-    });
-    render(<Lyrics id="1" filteredSongs={songs} />);
-    expect(screen.getByText(/lyrics not available/i)).toBeInTheDocument();
-  });
-
   it("renders song title and lyrics", () => {
     const songs = getSongsMap({
       "1": { title: "Test Song", lyrics: "Line 1\nLine 2", number: 1 },
