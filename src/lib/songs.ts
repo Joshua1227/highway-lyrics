@@ -3,7 +3,7 @@ import clientPromise from "./mongodb";
 
 let db: Db;
 let client: MongoClient;
-let songs: Collection<Document>;
+let songs: Collection<Record<string, unknown>>;
 
 async function init() {
   if (db) {
@@ -77,5 +77,24 @@ export async function searchSongs(searchKey: string) {
   } catch (error) {
     console.error("Error searching songs:", error);
     return { error: "Failed to search songs" };
+  }
+}
+
+export async function postNewSong(title: string, lyrics: string) {
+  try {
+    if (!songs) {
+      await init();
+    }
+    const newSong = {
+      title,
+      lyrics,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    const result = await songs.insertOne(newSong);
+    return { success: true, insertedId: result.insertedId.toString() };
+  } catch (error) {
+    console.error("Error posting new song:", error);
+    return { success: false, error: "Failed to post new song" };
   }
 }

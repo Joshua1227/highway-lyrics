@@ -4,6 +4,7 @@ import { useEffect, useState, MouseEvent } from "react";
 import { Song, UniqueSong } from "../utils/models";
 import Search from "./search";
 import Lyrics from "./lyrics";
+import Tiptap from "./components/editor";
 
 export default function Home() {
   // TODO maybe convert songMap to a ref
@@ -11,6 +12,7 @@ export default function Home() {
   const [songMap, setSongMap] = useState(new Map<string, Song>());
   const [filteredSongs, setFilteredSongs] = useState(new Map<string, Song>());
   const [currentSong, setCurrentSong] = useState("");
+  const [addingSong, setAddingSong] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -67,10 +69,24 @@ export default function Home() {
     }
   };
 
+  let sideContent = <Lyrics id={currentSong} filteredSongs={filteredSongs} />;
+
+  if (addingSong) {
+    sideContent = <Tiptap />;
+  }
+
   return (
     <>
       <div className="flex justify-between items-center mb-4 px-4 py-2 bg-gray-100 dark:bg-gray-800">
         <Search setFilteredSongs={setFilteredSongs} allSongs={songMap}></Search>
+        <button
+          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          onClick={() => {
+            setAddingSong((prev) => !prev);
+          }}
+        >
+          {addingSong ? "Cancel" : "Add Song"}
+        </button>
       </div>
       <h1 className="text-2xl font-bold">Highway Lyrics(Work in Progress)</h1>
       <div className="grid grid-cols-2 gap-2">
@@ -91,7 +107,7 @@ export default function Home() {
           })}
         </ol>
         <div className="bg-slate-400 p-4 rounded-lg overflow-y-auto h-[calc(100vh-8rem)] text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)] text-white">
-          <Lyrics id={currentSong} filteredSongs={filteredSongs} />
+          {sideContent}
         </div>
       </div>
     </>
