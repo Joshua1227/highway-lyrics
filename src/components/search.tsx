@@ -38,12 +38,8 @@ export default function Search({
     event.preventDefault();
 
     if (searchQuery) {
-      (async (event) => {
-        console.log(event);
-
-        console.log("searchQuery : \n", searchQuery);
+      (async () => {
         const foundSongs = await searchSongs(searchQuery);
-        console.log("foundSongs : \n", foundSongs);
         const localFilteredSongs = new Map<string, Song>();
 
         foundSongs.forEach((value) => {
@@ -57,11 +53,9 @@ export default function Search({
           });
         });
         setFilteredSongs(localFilteredSongs);
-        console.log("localFilteredSongs : \n", localFilteredSongs);
       })();
     } else {
       setFilteredSongs(allSongs);
-      console.log("No search query provided, resetting to all songs.");
     }
   };
 

@@ -46,7 +46,6 @@ export async function getSongById(songId: string) {
     if (!songs) {
       await init();
     }
-    console.log("Fetching song with ID:", songId);
     const query = { _id: new ObjectId(songId) };
     const songWithLyrics = await songs.findOne(query);
     return { song: songWithLyrics };
@@ -56,7 +55,7 @@ export async function getSongById(songId: string) {
   }
 }
 
-export async function searchSongs(searchKey: string) {
+export async function searchSongs(searchKey: string, minSimilarity = 0.5) {
   try {
     if (!songs) {
       await init();
@@ -69,7 +68,7 @@ export async function searchSongs(searchKey: string) {
             score: { $meta: "textScore" },
           },
         },
-        { $match: { score: { $gte: 0.5 } } },
+        { $match: { score: { $gte: minSimilarity } } },
         { $sort: { score: { $meta: "textScore" } } },
       ])
       .toArray();
