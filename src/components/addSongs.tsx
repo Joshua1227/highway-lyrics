@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 export default function AddSongs() {
   const router = useRouter();
   const handleClick = () => {
-    router.push("/addSongs");
+    router.push("/addSongs/authenticate");
   };
   return (
     <button
