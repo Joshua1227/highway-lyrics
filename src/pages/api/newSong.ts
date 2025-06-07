@@ -1,26 +1,27 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { searchSongs } from "@/lib/songs";
+import { postNewSong } from "@/lib/songs";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  if (req.method === "GET") {
-    const searchKey = req.query.key as string;
-    const minSimilarity = parseFloat(req.query.minSimilarity as string) || 0.5;
-    if (!searchKey) {
-      return res.status(400).json({ error: "Search Key is required" });
+  if (req.method === "POST") {
+    console.log("Received POST request for song", req.body);
+    const title = req.body.title;
+    const lyrics = req.body.lyrics;
+    if (!title || !lyrics) {
+      return res.status(400).json({ error: "Song Content is required" });
     }
     try {
-      const { songs, error } = await searchSongs(searchKey, minSimilarity);
+      const { success, insertedId, error } = await postNewSong(title, lyrics);
       if (error) {
         throw new Error(error);
       }
-      return res.status(200).json({ songs });
+      return res.status(200).json({ success, insertedId });
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "An unknown error occurred";
       return res.status(500).json({ error: errorMessage });
     }
   }
-  res.setHeader("Allow", ["GET"]);
+  res.setHeader("Allow", ["POST"]);
   res.status(405).end(`Method ${req.method} Not Allowed`);
 };
 export default handler;

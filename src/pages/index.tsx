@@ -94,7 +94,7 @@ export default function Home() {
           })}
         </ol>
         <div className="bg-slate-400 p-4 rounded-lg overflow-y-auto h-[calc(100vh-8rem)] text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)] text-white">
-          <Lyrics id={currentSong} filteredSongs={filteredSongs} />;
+          <Lyrics id={currentSong} filteredSongs={filteredSongs} />
         </div>
       </div>
     </>

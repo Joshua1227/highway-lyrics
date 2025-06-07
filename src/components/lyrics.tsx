@@ -1,5 +1,6 @@
 import { Song } from "@/utils/models";
 import { useState } from "react";
+import ViewEditor from "./viewEditor";
 
 export default function Lyrics({
   id,
@@ -80,6 +81,7 @@ export default function Lyrics({
       >
         {copyIcon}
       </button>
+      <ViewEditor content={songText}></ViewEditor>
       <pre className="text-lg font-mono whitespace-pre-wrap break-words p-4 ">
         {songText.split("\n").map((line, index) => (
           <span key={index}>

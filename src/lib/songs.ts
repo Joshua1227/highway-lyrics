@@ -89,6 +89,8 @@ export async function postNewSong(title: string, lyrics: string) {
       lyrics,
       createdAt: new Date(),
       updatedAt: new Date(),
+      addedby: "frontend User",
+      approvedby: "bo auth",
     };
     const result = await songs.insertOne(newSong);
     return { success: true, insertedId: result.insertedId.toString() };
