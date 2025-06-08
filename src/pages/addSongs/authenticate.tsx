@@ -1,5 +1,6 @@
 import router from "next/router";
 import React from "react";
+import "@/app/globals.css";
 
 export default function Authenticate() {
   const questions = {
@@ -23,7 +24,7 @@ export default function Authenticate() {
     questionKeys[Math.floor(Math.random() * questionKeys.length)];
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-background">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4 text-gray-800 font-sans w-full h-auto">
       <h1 className="text-2xl font-bold mb-4">Authenticate</h1>
       <p className="text-gray-600 mb-6">Question: {randomQuestion}</p>
       <input

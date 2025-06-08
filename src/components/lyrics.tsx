@@ -1,6 +1,6 @@
 import { Song } from "@/utils/models";
 import { useState } from "react";
-import ViewEditor from "./viewEditor";
+// import ViewEditor from "./viewEditor";
 
 export default function Lyrics({
   id,
@@ -25,7 +25,7 @@ export default function Lyrics({
 
   const songLyrics = filteredSongs.get(id)?.lyrics;
 
-  const songText = `${songTitle}\n\n${songLyrics}`;
+  const songText = `${songTitle}\n\n${String(songLyrics).trim()}`;
 
   const handleCopyClick = () => {
     setCopyClick(true);
@@ -73,23 +73,23 @@ export default function Lyrics({
   const copyIcon = copyClick ? clickedCopyIcon : baseCopyIcon;
 
   return (
-    <>
+    <div className="justify-between items-center p-4 bg-white rounded shadow-md max-w-2xl mt-8 text-gray-800 font-sans w-full h-auto">
       <button
-        className="float-left transition-all transition-normal transition-transform hover:scale-110 text-gray-700 hover:text-gray-900 transform hover:translate-x-1 hover:translate-y-1"
+        className="transition-all transition-normal transition-transform hover:scale-110 text-gray-700 hover:text-gray-900 transform hover:translate-x-1 hover:translate-y-1"
         title="Copy Lyrics"
         onClick={handleCopyClick}
       >
         {copyIcon}
       </button>
-      <ViewEditor content={songText}></ViewEditor>
-      <pre className="text-lg font-mono whitespace-pre-wrap break-words p-4 ">
+      {/* <ViewEditor content={songText}></ViewEditor> */}
+      <div className="text-lg font-mono whitespace-pre-wrap break-words p-4 font-sans w-full h-auto ">
         {songText.split("\n").map((line, index) => (
           <span key={index}>
             {line}
             <br />
           </span>
         ))}
-      </pre>
-    </>
+      </div>
+    </div>
   );
 }
