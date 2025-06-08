@@ -27,7 +27,7 @@ export default function Lyrics({
 
   const songText = `${songTitle}\n\n${String(songLyrics)
     .trim()
-    .replace(/\n/g, "\n")}`;
+    .replace(/\\n+/g, "\n")}`;
 
   const handleCopyClick = () => {
     setCopyClick(true);
