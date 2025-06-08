@@ -25,7 +25,9 @@ export default function Lyrics({
 
   const songLyrics = filteredSongs.get(id)?.lyrics;
 
-  const songText = `${songTitle}\n\n${String(songLyrics).trim()}`;
+  const songText = `${songTitle}\n${String(songLyrics)
+    .trim()
+    .replace(/\n{2,}/g, "\n")}`;
 
   const handleCopyClick = () => {
     setCopyClick(true);
@@ -73,7 +75,7 @@ export default function Lyrics({
   const copyIcon = copyClick ? clickedCopyIcon : baseCopyIcon;
 
   return (
-    <div className="justify-between items-center p-4 bg-white rounded shadow-md max-w-2xl mt-8 text-gray-800 font-sans w-full h-auto">
+    <div className="justify-between items-center p-4 max-w-2xl mt-8 text-white font-sans w-full h-auto">
       <button
         className="transition-all transition-normal transition-transform hover:scale-110 text-gray-700 hover:text-gray-900 transform hover:translate-x-1 hover:translate-y-1"
         title="Copy Lyrics"
