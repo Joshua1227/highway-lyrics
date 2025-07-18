@@ -18,7 +18,9 @@ export default function Home() {
     (async () => {
       const response = await fetch("/api/allSongs");
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        console.error(`HTTP error! status: ${response.status}`);
+        alert("Error fetching songs. Please try again later.");
+        return;
       }
       const responseSongs = await response.json();
       if (responseSongs.songs) {
@@ -49,7 +51,9 @@ export default function Home() {
             `/api/song?songId=${encodeURIComponent(songId)}`
           );
           if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            console.error(`HTTP error! status: ${response.status}`);
+            alert("Error fetching song. Please try again later.");
+            return;
           }
           const responseSong = await response.json();
           if (responseSong.song) {

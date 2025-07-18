@@ -2,7 +2,7 @@ import router from "next/router";
 import React from "react";
 import "@/app/globals.css";
 
-export default function Authenticate() {
+export default function Login() {
   const questions = {
     "What is the name of the garden where Jesus prayed before his crucifixion?":
       "Gethsemane",
@@ -40,15 +40,29 @@ export default function Authenticate() {
           // Logic for authentication goes here
           const answer = (document.getElementById("answer") as HTMLInputElement)
             .value;
-          if (
-            answer.toLowerCase() === questions[randomQuestion].toLowerCase()
-          ) {
-            // Redirect to the main page or perform any other action
-            router.push("/addSongs");
-          } else {
-            alert("Authentication failed. Please try later.");
-            router.push("/");
-          }
+          (async () => {
+            const response = await fetch("/api/login", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ userId: "testUser", password: answer }),
+            });
+            if (!response.ok) {
+              console.error(`HTTP error! status: ${response.status}`);
+              router.push("/");
+            }
+            const data = await response.json();
+            if (data.success) {
+              // Authentication successful
+              alert("Authentication successful!");
+              router.push("/addSongs");
+            } else {
+              // Authentication failed
+              alert("Authentication failed. Please try again.");
+              router.push("/");
+            }
+          })();
         }}
       >
         Authenticate and submit answer

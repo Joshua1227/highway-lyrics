@@ -24,7 +24,9 @@ export default function Search({
       `/api/searchSongs?key=${encodeURIComponent(key)}`
     );
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      console.error(`HTTP error! status: ${response.status}`);
+      alert("Error fetching songs. Please try again later.");
+      return [];
     }
     const responseJson = await response.json();
     if (responseJson.songs) {
