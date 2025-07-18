@@ -8,7 +8,9 @@ export async function findDuplicates(inputSong: string) {
       )}&minSimilarity=${encodeURIComponent("1.0")}`
     );
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      console.error(`HTTP error! status: ${response.status}`);
+      alert("Error fetching songs. Please try again later.");
+      return [];
     }
     const responseJson = await response.json();
     if (responseJson.songs) {

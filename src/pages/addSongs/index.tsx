@@ -28,7 +28,8 @@ export default function AddSongs() {
       body: JSON.stringify({ title: title, lyrics: lyrics }), // Convert data to JSON string
     });
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      console.error(`HTTP error! status: ${response.status}`);
+      return;
     }
     alert("Song Added successfully");
     router.push("/");
@@ -102,7 +103,9 @@ export default function AddSongs() {
             `/api/song?songId=${encodeURIComponent(songId)}`
           );
           if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            console.error(`HTTP error! status: ${response.status}`);
+            alert("Error fetching song. Please try again later.");
+            return;
           }
           const responseSong = await response.json();
           if (responseSong.song) {
