@@ -14,7 +14,6 @@ export default async function middleware(req: NextRequest) {
 
   // 3. Decrypt the session from the cookie
   const cookie = (await cookies()).get("highway-session")?.value;
-  console.log("Cookie value:", cookie);
   const decryptedSession = cookie ? await decrypt(cookie) : null;
   try {
     const session = decryptedSession ? JSON.parse(decryptedSession) : null;

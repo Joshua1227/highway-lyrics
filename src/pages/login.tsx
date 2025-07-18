@@ -55,7 +55,7 @@ export default function Login() {
             const data = await response.json();
             if (data.success) {
               // Authentication successful
-              alert("Authentication successful!");
+              // alert("Authentication successful!");
               router.push("/addSongs");
             } else {
               // Authentication failed

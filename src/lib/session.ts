@@ -3,8 +3,6 @@ const decoder = new TextDecoder();
 const secret = process.env.SESSION_SECRET || "default_secret_key_32bytes!"; // Must be 32 bytes for AES-256
 
 async function getKey() {
-  console.log("Using secret:", secret);
-  console.log("Key length:", secret.length);
   return await crypto.subtle.importKey(
     "raw",
     encoder.encode(secret),
