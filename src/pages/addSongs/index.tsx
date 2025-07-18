@@ -55,14 +55,11 @@ export default function AddSongs() {
 
   const handleLyricsSubmit = (title: string, content: string) => {
     // Handle the submission of lyrics here
-    console.log("Title:", title);
     // setTitle(title);
-    console.log("Content:", content);
     // setLyrics(content);
     findDuplicates(title + "\n" + content).then((duplicates) => {
       if (duplicates.length > 0) {
         setDuplicateSongs(duplicates);
-        console.log("Duplicate songs found:", duplicates);
         setShowDuplicates(true);
         setShowEditor(false);
       } else {

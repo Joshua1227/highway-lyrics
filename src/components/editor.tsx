@@ -36,7 +36,6 @@ const Tiptap = ({
         className="mb-4 p-2 border border-gray-300 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         onChange={(e) => {
           const title = e.target.value;
-          console.log("Title:", title);
           setTitle(title);
           // Here you can handle the title, e.g., save it to a database
         }}
@@ -67,7 +66,6 @@ const Tiptap = ({
       <button
         onClick={() => {
           const content = editor.getHTML();
-          console.log("Content:", content);
           handleSubmit(title, content);
           // Here you can handle the content, e.g., save it to a database
         }}
