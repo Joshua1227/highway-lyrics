@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import AddSongs from "../addSongs";
 
 jest.mock("next/navigation", () => ({

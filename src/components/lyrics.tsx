@@ -1,15 +1,27 @@
-import { Song } from "@/utils/models";
 import React, { useState } from "react";
+import { Song } from "@/utils/models";
 // import ViewEditor from "./viewEditor";
 
-export default function Lyrics({
-  id,
-  filteredSongs,
-}: {
+import React, { useState } from "react";
+import { Song } from "@/utils/models";
+
+const Lyrics: React.FC<{
   id: string;
   filteredSongs: Map<string, Song>;
-}) {
+}> = ({
+  id,
+  filteredSongs,
+}) => {
   const [copyClick, setCopyClick] = useState(false);
+  
+  if (!id) {
+    return <p>No song selected</p>;
+  }
+  const songData = filteredSongs.get(id);
+  if (!songData || songData.lyrics === undefined) {
+    return <p>Loading lyrics...</p>;
+  }
+
 
   if (!id) {
     return <p>No song selected</p>;
@@ -94,4 +106,6 @@ export default function Lyrics({
       </div>
     </div>
   );
-}
+};
+
+export default Lyrics;

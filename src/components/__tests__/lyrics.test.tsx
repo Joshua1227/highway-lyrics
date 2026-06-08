@@ -1,5 +1,3 @@
-/** @jsx React.createElement */
-import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import Lyrics from "../lyrics";
 import { Song } from "@/utils/models";
