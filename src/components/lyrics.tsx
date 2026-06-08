@@ -1,5 +1,5 @@
 import { Song } from "@/utils/models";
-import { useState } from "react";
+import React, { useState } from "react";
 // import ViewEditor from "./viewEditor";
 
 export default function Lyrics({

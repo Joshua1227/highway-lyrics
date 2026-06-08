@@ -1,0 +1,35 @@
+import { createMocks } from "node-mocks-http";
+import handler from "../newSong";
+import * as songs from "@/lib/songs";
+
+jest.mock("@/lib/songs", () => ({
+  postNewSong: jest.fn(),
+}));
+
+describe("/api/newSong", () => {
+  test("should create a new song on POST", async () => {
+    const mockTitle = "New Song";
+    const mockLyrics = "Some lyrics";
+    (songs.postNewSong as jest.Mock).mockResolvedValue({ success: true, insertedId: "testId" });
+
+    const { req, res } = createMocks({
+      method: "POST",
+      body: { title: mockTitle, lyrics: mockLyrics },
+    });
+
+    await handler(req as any, res as any);
+
+    expect(res._getStatusCode()).toBe(200);
+    expect(res._getJSONData()).toEqual({ success: true, insertedId: "testId" });
+  });
+
+  test("should return 400 if title is missing", async () => {
+    const { req, res } = createMocks({
+      method: "POST",
+      body: { lyrics: "No title" },
+    });
+
+    await handler(req as any, res as any);
+    expect(res._getStatusCode()).toBe(400);
+  });
+});
