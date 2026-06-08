@@ -1,28 +1,28 @@
 import { getAllSongs, getSongById, searchSongs, postNewSong } from "../songs";
+import { vi } from 'vitest';
 
 // Mock the mongodb client promise
-jest.mock("../mongodb", () => ({
+vi.mock("../mongodb", () => ({
   __esModule: true,
   default: Promise.resolve({
-    db: jest.fn().mockReturnValue({
-      collection: jest.fn().mockReturnValue({
-        find: jest.fn().mockReturnThis(),
-        map: jest.fn().mockReturnThis(),
-        sort: jest.fn().mockReturnThis(),
-        toArray: jest.fn().mockResolvedValue([
+    db: vi.fn().mockReturnValue({
+      collection: vi.fn().mockReturnValue({
+        find: vi.fn().mockReturnThis(),
+        map: vi.fn().mockReturnThis(),
+        sort: vi.fn().mockReturnThis(),
+        toArray: vi.fn().mockResolvedValue([
           { _id: "000000000000000000000001", title: "Song A", lyrics: "Lyrics A" },
           { _id: "000000000000000000000002", title: "Song B", lyrics: "Lyrics B" },
         ]),
-        findOne: jest.fn().mockResolvedValue({ _id: "000000000000000000000001", title: "Test Song", lyrics: "Test Lyrics" }),
-        aggregate: jest.fn().mockReturnThis(),
-        insertOne: jest.fn().mockResolvedValue({ insertedId: "000000000000000000000003" }),
+        findOne: vi.fn().mockResolvedValue({ _id: "000000000000000000000001", title: "Test Song", lyrics: "Test Lyrics" }),
+        aggregate: vi.fn().mockReturnThis(),
+        insertOne: vi.fn().mockResolvedValue({ insertedId: "000000000000000000000003" }),
       }),
     }),
   }),
 }));
 
 describe("songs.ts unit tests", () => {
-
   test("getAllSongs should fetch all songs", async () => {
     const result = await getAllSongs();
     expect(result).toHaveProperty("songs");
@@ -44,10 +44,5 @@ describe("songs.ts unit tests", () => {
     const result = await postNewSong("New Title", "New Lyrics");
     expect(result.success).toBe(true);
     expect(result.insertedId).toBe("000000000000000000000003");
-  });
-
-  test("should handle database errors gracefully", async () => {
-    // This requires forcing a failure in the mock.
-    // For now, testing the success paths first.
   });
 });

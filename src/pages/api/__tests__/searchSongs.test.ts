@@ -1,15 +1,16 @@
 import { createMocks } from "node-mocks-http";
 import handler from "../searchSongs";
 import * as songs from "@/lib/songs";
+import { vi } from "vitest";
 
-jest.mock("@/lib/songs", () => ({
-  searchSongs: jest.fn(),
+vi.mock("@/lib/songs", () => ({
+  searchSongs: vi.fn(),
 }));
 
 describe("/api/searchSongs", () => {
   test("should return search results on GET", async () => {
     const mockSongs = [{ _id: "1", title: "Test Song", lyrics: "Lyrics" }];
-    (songs.searchSongs as jest.Mock).mockResolvedValue({ songs: mockSongs });
+    (songs.searchSongs as any).mockResolvedValue({ songs: mockSongs });
 
     const { req, res } = createMocks({
       method: "GET",

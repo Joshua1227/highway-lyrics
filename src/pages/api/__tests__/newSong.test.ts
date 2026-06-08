@@ -1,16 +1,17 @@
 import { createMocks } from "node-mocks-http";
 import handler from "../newSong";
 import * as songs from "@/lib/songs";
+import { vi } from "vitest";
 
-jest.mock("@/lib/songs", () => ({
-  postNewSong: jest.fn(),
+vi.mock("@/lib/songs", () => ({
+  postNewSong: vi.fn(),
 }));
 
 describe("/api/newSong", () => {
   test("should create a new song on POST", async () => {
     const mockTitle = "New Song";
     const mockLyrics = "Some lyrics";
-    (songs.postNewSong as jest.Mock).mockResolvedValue({ success: true, insertedId: "testId" });
+    (songs.postNewSong as any).mockResolvedValue({ success: true, insertedId: "testId" });
 
     const { req, res } = createMocks({
       method: "POST",
