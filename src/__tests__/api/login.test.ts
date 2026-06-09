@@ -1,5 +1,5 @@
 import { createMocks } from "node-mocks-http";
-import handler from "../login";
+import handler from "../../pages/api/login";
 import { NextApiRequest, NextApiResponse } from "next";
 
 jest.mock("@/lib/session", () => ({

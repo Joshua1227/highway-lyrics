@@ -1,5 +1,5 @@
 import { createMocks } from "node-mocks-http";
-import handler from "../newSong";
+import handler from "../../pages/api/newSong";
 import * as songs from "@/lib/songs";
 import { vi } from "vitest";
 import { NextApiRequest, NextApiResponse } from "next";
