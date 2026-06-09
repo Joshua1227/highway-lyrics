@@ -1,40 +1,36 @@
-# Updated Testing Strategy for Highway Lyrics (Goal: 70% Coverage)
+# Comprehensive Testing Strategy (Update)
 
-This plan focuses on increasing the test coverage to at least 70% by targeting critical business logic, error handling, and high-priority components.
+This plan enhances the testing strategy to include end-to-end (E2E) testing for all major user functionalities using Playwright, ensuring every feature is validated in a real-browser environment.
 
-## 1. Coverage Gap Analysis
-- **`components/` (currently ~9%):** Needs tests for interaction, state changes, and rendering of all sub-components.
-- **`lib/` (Untested):** Core database and logic files are currently not contributing to the coverage.
-- **`pages/api/` (currently ~78%):** Needs tests for remaining endpoints (`song.ts`, `searchSongs.ts`, `login.ts`, `newSong.ts`).
-- **`utils/` (currently ~68%):** Needs tests for edge cases in `findDuplicates.ts`.
+## 1. Updated Testing Strategy
+- **Unit & Integration Testing (Vitest + RTL):** Focus on business logic, utility functions, and individual React components.
+- **E2E Testing (Playwright):** Focus on critical user journeys for all major features.
 
-## 2. Targeted Implementation Plan
+## 2. Playwright Test Mapping
 
-### Phase A: Core Logic Coverage (High Priority)
-1.  **`src/lib/songs.ts`:** Implement tests for all database utility functions (`getAllSongs`, `getSongById`, `searchSongs`, `postNewSong`). These are the backbone of the application.
-2.  **`src/utils/findDuplicates.ts`:** Add test cases for network failures, empty result sets, and error parsing.
-
-### Phase B: API Route Coverage
-1.  **Endpoints:** Implement tests for `song.ts`, `searchSongs.ts`, `login.ts`, and `newSong.ts`.
-2.  **Method Coverage:** Ensure `POST`/`GET` methods and error handling (400, 401, 405, 500 status codes) are fully exercised.
-
-### Phase C: Component Coverage
-1.  **`Lyrics` Component:** Expand tests to verify state toggling (copy button, expand/collapse), and empty state rendering.
-2.  **`Search` Component:** Test form submission, input handling, and the filtering logic.
-3.  **`AddSongs` Component:** Test form submission validation and UI feedback.
-
-## 3. Revised Action Plan
-
-| Task | Priority | Target File |
+| Functionality | Target Feature | E2E Spec File |
 | :--- | :--- | :--- |
-| Mock `mongodb` and test all `lib/songs.ts` functions | High | `src/lib/__tests__/songs.test.ts` |
-| Complete `findDuplicates` edge case tests | High | `src/utils/__tests__/findDuplicates.test.ts` |
-| Add endpoint tests for `api/song.ts` and `api/newSong.ts` | Medium | `src/pages/api/__tests__/` |
-| Expand `Lyrics` component interactivity tests | Medium | `src/components/__tests__/lyrics.test.tsx` |
-| Implement tests for `Search` and `AddSongs` components | Medium | `src/components/__tests__/` |
+| **Homepage** | Display song list & search | `e2e/homepage.spec.ts` |
+| **Authentication** | Login flow & cookie handling | `e2e/login.spec.ts` |
+| **Song Management** | Adding new songs (form & submission) | `e2e/addSong.spec.ts` |
+| **Song View** | Selecting a song and viewing lyrics | `e2e/songView.spec.ts` |
+| **Duplicate Check** | Duplicate detection during add flow | `e2e/duplicates.spec.ts` |
 
-## 4. Execution Loop
-1. **Identify** the next untested branch or function.
-2. **Write** a test case to exercise that path.
-3. **Run** `npm run test -- --coverage` to verify the coverage increase.
-4. **Repeat** until 70% coverage is met.
+## 3. Implementation Steps
+
+1.  **Environment Setup**: Ensure `playwright` is installed and `playwright.config.ts` points correctly to the dev server.
+2.  **Authentication Mocking/State**: Implement state handling (e.g., storing authenticated session cookies) to skip the login flow where necessary for specific tests.
+3.  **Implement E2E Specs**:
+    *   **`addSong.spec.ts`**: Test the full flow of filling out the "Add Song" form and validating the success response.
+    *   **`login.spec.ts`**: Test successful/failed login scenarios and redirect logic.
+    *   **`songView.spec.ts`**: Test clicking a song from the list and the lyrics component appearing.
+4.  **CI/CD Integration**: Configure CI to run both `vitest` (unit/integration) and `playwright` (E2E) in parallel.
+
+## 4. Best Practices for E2E
+- **Data Isolation**: Use dedicated test databases or clean up state after every test run.
+- **Locators**: Use semantic locators (e.g., `getByRole`, `getByLabel`) instead of CSS selectors where possible.
+- **Test Independence**: Each test should be independent and perform its own setup (e.g., authentication).
+- **Assertions**: Use web-first assertions (`await expect(...).toBeVisible()`) to avoid race conditions.
+
+---
+*To execute the E2E suite, run: `npx playwright test`*
