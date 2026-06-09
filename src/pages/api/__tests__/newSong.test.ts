@@ -2,6 +2,7 @@ import { createMocks } from "node-mocks-http";
 import handler from "../newSong";
 import * as songs from "@/lib/songs";
 import { vi } from "vitest";
+import { NextApiRequest, NextApiResponse } from "next";
 
 vi.mock("@/lib/songs", () => ({
   postNewSong: vi.fn(),
@@ -11,14 +12,14 @@ describe("/api/newSong", () => {
   test("should create a new song on POST", async () => {
     const mockTitle = "New Song";
     const mockLyrics = "Some lyrics";
-    (songs.postNewSong as any).mockResolvedValue({ success: true, insertedId: "testId" });
+    (songs.postNewSong as unknown as jest.Mock).mockResolvedValue({ success: true, insertedId: "testId" });
 
     const { req, res } = createMocks({
       method: "POST",
       body: { title: mockTitle, lyrics: mockLyrics },
     });
 
-    await handler(req as any, res as any);
+    await handler(req as unknown as NextApiRequest, res as unknown as NextApiResponse);
 
     expect(res._getStatusCode()).toBe(200);
     expect(res._getJSONData()).toEqual({ success: true, insertedId: "testId" });
@@ -30,7 +31,7 @@ describe("/api/newSong", () => {
       body: { lyrics: "No title" },
     });
 
-    await handler(req as any, res as any);
+    await handler(req as unknown as NextApiRequest, res as unknown as NextApiResponse);
     expect(res._getStatusCode()).toBe(400);
   });
 });

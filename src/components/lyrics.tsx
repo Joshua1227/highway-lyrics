@@ -15,7 +15,7 @@ const Lyrics: React.FC<{
     return <p>Loading lyrics...</p>;
   }
 
-  let songTitle = songData.title || "Unknown Title";
+  const songTitle = songData.title || "Unknown Title";
   const songLyrics = songData.lyrics;
 
   const songText = `${songTitle}\n\n${String(songLyrics)
