@@ -5,8 +5,7 @@ test.describe('Authentication', () => {
     await page.goto('/login');
     
     // The password in the test must match process.env.PASSWORD
-    // In dev, .env sets PASSWORD=HeartOfWorship
-    await page.fill('input[name="answer"]', 'HeartOfWorship');
+    await page.fill('input[name="answer"]', process.env.PASSWORD || 'HeartOfWorship');
     
     // The onClick handler for this button does the POST to /api/login
     await page.click('button:has-text("Authenticate")');
@@ -41,7 +40,7 @@ test.describe('Authentication', () => {
     const question = Object.keys(questions).find(q => questionText.includes(q));
     const answer = questions[question as keyof typeof questions];
 
-    await page.fill('input[name="answer"]', 'HeartOfWorship');
+    await page.fill('input[name="answer"]', process.env.PASSWORD || 'HeartOfWorship');
     await page.click('button:has-text("Authenticate")');
     
     // Should successfully redirect
