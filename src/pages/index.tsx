@@ -13,6 +13,7 @@ export default function Home() {
   const [songMap, setSongMap] = useState(new Map<string, Song>());
   const [filteredSongs, setFilteredSongs] = useState(new Map<string, Song>());
   const [currentSong, setCurrentSong] = useState("");
+  const [isExpanded, setIsExpanded] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -80,25 +81,32 @@ export default function Home() {
         <AddSongs></AddSongs>
       </div>
       <h1 className="text-2xl font-bold">Highway Lyrics(Work in Progress)</h1>
-      <div className="grid grid-cols-2 gap-2">
-        <ol className="bg-stone-300 list-inside list-none text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)] overflow-y-auto h-[calc(100vh-8rem)] p-4 rounded-lg">
-          {Array.from(filteredSongs.entries()).map((entry) => {
-            const [key, value] = entry;
-            return (
-              <li key={key}>
-                <button
-                  className="mb-2"
-                  value={key}
-                  onClick={updateCurrentSong}
-                >
-                  {value.number + ". " + value.title}
-                </button>
-              </li>
-            );
-          })}
-        </ol>
-        <div className="bg-slate-400 p-4 rounded-lg overflow-y-auto h-[calc(100vh-8rem)] text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)] text-white">
-          <Lyrics id={currentSong} filteredSongs={filteredSongs} />
+      <div className={`grid gap-2 ${isExpanded ? "grid-cols-1" : "grid-cols-2"}`}>
+        {!isExpanded && (
+          <ol className="bg-stone-300 list-inside list-none text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)] overflow-y-auto h-[calc(100vh-8rem)] p-4 rounded-lg">
+            {Array.from(filteredSongs.entries()).map((entry) => {
+              const [key, value] = entry;
+              return (
+                <li key={key}>
+                  <button
+                    className="mb-2"
+                    value={key}
+                    onClick={updateCurrentSong}
+                  >
+                    {value.number + ". " + value.title}
+                  </button>
+                </li>
+              );
+            })}
+          </ol>
+        )}
+        <div className={`bg-slate-400 p-4 rounded-lg overflow-y-auto h-[calc(100vh-8rem)] text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)] text-white`}>
+          <Lyrics
+            id={currentSong}
+            filteredSongs={filteredSongs}
+            isExpanded={isExpanded}
+            setIsExpanded={setIsExpanded}
+          />
         </div>
       </div>
     </>

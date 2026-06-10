@@ -4,7 +4,14 @@ import { Song } from "@/utils/models";
 
 describe("Lyrics component", () => {
   test("should display 'No song selected' when id is missing", () => {
-    render(<Lyrics id="" filteredSongs={new Map()} />);
+    render(
+      <Lyrics
+        id=""
+        filteredSongs={new Map()}
+        isExpanded={false}
+        setIsExpanded={jest.fn()}
+      />
+    );
     expect(screen.getByText("No song selected")).toBeInTheDocument();
   });
 
@@ -12,7 +19,14 @@ describe("Lyrics component", () => {
     const mockSongs = new Map<string, Song>([
       ["1", { title: "Test Song", lyrics: "Test Lyrics", number: 1 }],
     ]);
-    render(<Lyrics id="1" filteredSongs={mockSongs} />);
+    render(
+      <Lyrics
+        id="1"
+        filteredSongs={mockSongs}
+        isExpanded={false}
+        setIsExpanded={jest.fn()}
+      />
+    );
     expect(screen.getByText("Test Song")).toBeInTheDocument();
     expect(screen.getByText("Test Lyrics")).toBeInTheDocument();
   });
@@ -21,11 +35,34 @@ describe("Lyrics component", () => {
     const mockSongs = new Map<string, Song>([
       ["1", { title: "Test Song", lyrics: "Test Lyrics", number: 1 }],
     ]);
-    render(<Lyrics id="1" filteredSongs={mockSongs} />);
+    render(
+      <Lyrics
+        id="1"
+        filteredSongs={mockSongs}
+        isExpanded={false}
+        setIsExpanded={jest.fn()}
+      />
+    );
     const button = screen.getByTitle("Copy Lyrics");
     fireEvent.click(button);
-    // After clicking, the button should have the 'clicked' icon class or structure
-    // Since we can't easily check for the SVG change, this is a basic interaction test.
     expect(button).toBeDefined();
+  });
+
+  test("should call setIsExpanded when toggle button is clicked", () => {
+    const mockSongs = new Map<string, Song>([
+      ["1", { title: "Test Song", lyrics: "Test Lyrics", number: 1 }],
+    ]);
+    const setIsExpanded = jest.fn();
+    render(
+      <Lyrics
+        id="1"
+        filteredSongs={mockSongs}
+        isExpanded={false}
+        setIsExpanded={setIsExpanded}
+      />
+    );
+    const button = screen.getByTitle("Toggle Expand");
+    fireEvent.click(button);
+    expect(setIsExpanded).toHaveBeenCalledWith(true);
   });
 });

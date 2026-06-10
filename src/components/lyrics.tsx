@@ -4,7 +4,9 @@ import { Song } from "@/utils/models";
 const Lyrics: React.FC<{
   id: string;
   filteredSongs: Map<string, Song>;
-}> = ({ id, filteredSongs }) => {
+  isExpanded: boolean;
+  setIsExpanded: (expanded: boolean) => void;
+}> = ({ id, filteredSongs, isExpanded, setIsExpanded }) => {
   const [copyClick, setCopyClick] = useState(false);
 
   if (!id) {
@@ -45,15 +47,30 @@ const Lyrics: React.FC<{
 
   const copyIcon = copyClick ? clickedCopyIcon : baseCopyIcon;
 
+  const expandIcon = (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+      <path strokeLinecap="round" strokeLinejoin="round" d={isExpanded ? "M9 9V4.5M9 9H4.5M9 9 3.75 3.75M9 15v4.5M9 15h4.5M9 15l5.25 5.25M15 9h4.5M15 9V4.5M15 9l5.25-5.25M15 15h4.5M15 15v4.5M15 15l5.25 5.25" : "M3.75 3.75v4.5m0-4.5h4.5M3.75 3.75 9 9M3.75 20.25v-4.5m0 4.5h4.5M3.75 20.25 9 15M20.25 3.75h-4.5m4.5 0v4.5M20.25 3.75 15 9m5.25 11.25h-4.5m4.5 0v-4.5M20.25 20.25 15 15"} />
+    </svg>
+  );
+
   return (
-    <div className="justify-between items-center p-4 max-w-2xl mt-8 text-white font-sans w-full h-auto">
-      <button
-        className="transition-all transition-normal transition-transform hover:scale-110 text-gray-700 hover:text-gray-900 transform hover:translate-x-1 hover:translate-y-1"
-        title="Copy Lyrics"
-        onClick={handleCopyClick}
-      >
-        {copyIcon}
-      </button>
+    <div className={`justify-between items-center p-4 ${isExpanded ? "max-w-none" : "max-w-2xl"} mt-8 text-white font-sans w-full h-auto`}>
+      <div className="flex gap-4">
+        <button
+          className="transition-all transition-normal transition-transform hover:scale-110 text-gray-700 hover:text-gray-900 transform hover:translate-x-1 hover:translate-y-1"
+          title="Toggle Expand"
+          onClick={() => setIsExpanded(!isExpanded)}
+        >
+          {expandIcon}
+        </button>
+        <button
+          className="transition-all transition-normal transition-transform hover:scale-110 text-gray-700 hover:text-gray-900 transform hover:translate-x-1 hover:translate-y-1"
+          title="Copy Lyrics"
+          onClick={handleCopyClick}
+        >
+          {copyIcon}
+        </button>
+      </div>
       <div className="text-lg font-mono whitespace-pre-wrap break-words p-4 font-sans w-full h-auto ">
         {songText.split("\n").map((line, index) => (
           <span key={index}>
