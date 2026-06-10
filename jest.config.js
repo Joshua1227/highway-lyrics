@@ -1,16 +1,31 @@
 module.exports = {
-    preset: "ts-jest/presets/js-with-ts",
-  testEnvironment: "jsdom",
-  setupFilesAfterEnv: ["@testing-library/jest-dom"],
-  moduleNameMapper: {
-    "^@/(.*)$": "<rootDir>/src/$1"
-  },
+  preset: "ts-jest",
+  testEnvironment: "jest-environment-jsdom",
+  setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
   transform: {
-    "^.+\\.(ts|tsx)$": "ts-jest"
+    "^.+\\.(ts|tsx)$": "ts-jest",
   },
-  globals: {
-      'ts-jest': {
-        tsConfig: 'tsconfig.jest.json'
-      }
-    }
+  moduleNameMapper: {
+    "^@/(.*)$": "<rootDir>/src/$1",
+    "\\.(css|less|scss|sass)$": "identity-obj-proxy",
+    "^react$": "<rootDir>/node_modules/react",
+  },
+  transformIgnorePatterns: [
+    "/node_modules/(?!next|@next|react|@testing-library)"
+  ],
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

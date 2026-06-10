@@ -1,4 +1,5 @@
 import { Song, UniqueSong } from "@/utils/models";
+import React from "react";
 import {
   ChangeEvent,
   Dispatch,
@@ -62,7 +63,7 @@ export default function Search({
   };
 
   return (
-    <search>
+    <div className="search-container">
       <form onSubmit={updateFilteredSongs}>
         <input
           className="rounded-md shadow-sm"
@@ -79,6 +80,6 @@ export default function Search({
           Search
         </button>
       </form>
-    </search>
+    </div>
   );
-}
+};

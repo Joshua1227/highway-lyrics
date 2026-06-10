@@ -11,7 +11,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
       const { song, error } = await getSongById(songId);
       if (error) {
-        throw new Error(error);
+        return res.status(404).json({ error: "Song not found" });
       }
       return res.status(200).json({ song });
     } catch (error) {

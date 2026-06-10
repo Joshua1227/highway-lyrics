@@ -48,11 +48,13 @@ export default function Login() {
               },
               body: JSON.stringify({ userId: "testUser", password: answer }),
             });
+            console.log("Login response status:", response.status);
             if (!response.ok) {
               console.error(`HTTP error! status: ${response.status}`);
               router.push("/");
             }
             const data = await response.json();
+            console.log("Login response data:", data);
             if (data.success) {
               // Authentication successful
               // alert("Authentication successful!");

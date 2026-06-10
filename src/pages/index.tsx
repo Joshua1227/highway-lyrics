@@ -1,6 +1,6 @@
 "use client";
 // import Image from "next/image";
-import { useEffect, useState, MouseEvent } from "react";
+import React, { useEffect, useState, MouseEvent } from "react";
 import { Song, UniqueSong } from "../utils/models";
 import Search from "../components/search";
 import Lyrics from "../components/lyrics";

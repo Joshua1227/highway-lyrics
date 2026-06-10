@@ -6,7 +6,16 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const sessionData = JSON.stringify(req.body);
+  if (req.method !== "POST") {
+    return res.status(405).json({ message: "Method Not Allowed" });
+  }
+
+  const { userId, password } = req.body;
+  if (!userId || !password) {
+    return res.status(400).json({ message: "Missing credentials" });
+  }
+
+  const sessionData = JSON.stringify({ userId, password });
   const encryptedSessionData = await encrypt(sessionData);
 
   const cookie = serialize("highway-session", encryptedSessionData, {
