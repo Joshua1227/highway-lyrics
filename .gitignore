@@ -12,7 +12,6 @@
 
 # testing
 /coverage
-/playwright-report
 
 # next.js
 /.next/
