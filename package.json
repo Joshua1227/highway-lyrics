@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "test": "vitest",
-    "test:ui": "vitest --ui"
+    "test:ui": "vitest --ui",
+    "test:e2e": "playwright test",
+    "test:all": "vitest && playwright test"
   },
   "dependencies": {
     "@tiptap/extension-bold": "^2.12.0",

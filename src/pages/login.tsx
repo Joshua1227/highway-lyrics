@@ -1,8 +1,12 @@
-import router from "next/router";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import React from "react";
 import "@/app/globals.css";
 
 export default function Login() {
+  const router = useRouter();
+  const [randomQuestion, setRandomQuestion] = useState<string>("");
+
   const questions = {
     "What is the name of the garden where Jesus prayed before his crucifixion?":
       "Gethsemane",
@@ -20,8 +24,12 @@ export default function Login() {
   };
   type QuestionKey = keyof typeof questions;
   const questionKeys = Object.keys(questions) as QuestionKey[];
-  const randomQuestion =
-    questionKeys[Math.floor(Math.random() * questionKeys.length)];
+
+  useEffect(() => {
+    setRandomQuestion(
+      questionKeys[Math.floor(Math.random() * questionKeys.length)]
+    );
+  }, []);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4 text-gray-800 font-sans w-full h-auto">
@@ -71,4 +79,8 @@ export default function Login() {
       </button>
     </div>
   );
+}
+
+export async function getServerSideProps() {
+  return { props: {} };
 }
