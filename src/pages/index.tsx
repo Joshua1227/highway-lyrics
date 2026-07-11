@@ -89,7 +89,7 @@ export default function Home() {
         </div>
         <AddSongs></AddSongs>
       </div>
-      <h1 className="text-2xl font-bold">Highway Lyrics(Work in Progress)</h1>
+      <h1 className="text-2xl font-bold">Highway Lyrics</h1>
       <div className="grid grid-cols-2 gap-2">
         <ol className="bg-stone-300 list-inside list-none text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)] overflow-y-auto h-[calc(100vh-8rem)] p-4 rounded-lg">
           {Array.from(filteredSongs.entries()).map((entry) => {
