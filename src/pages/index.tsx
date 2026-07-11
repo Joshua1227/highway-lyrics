@@ -6,8 +6,10 @@ import Search from "../components/search";
 import Lyrics from "../components/lyrics";
 import "@/app/globals.css";
 import AddSongs from "@/components/addSongs";
+import { useRouter } from "next/router";
 
 export default function Home() {
+  const router = useRouter();
   // TODO maybe convert songMap to a ref
   // TODO let filtered songs just be a list of song Ids instead of holding duplicate information
   const [songMap, setSongMap] = useState(new Map<string, Song>());
@@ -76,7 +78,15 @@ export default function Home() {
   return (
     <>
       <div className="flex justify-between items-center mb-4 px-4 py-2 bg-gray-100 dark:bg-gray-800">
-        <Search setFilteredSongs={setFilteredSongs} allSongs={songMap}></Search>
+        <div className="flex items-center space-x-2">
+          <Search setFilteredSongs={setFilteredSongs} allSongs={songMap}></Search>
+          <button
+            onClick={() => router.push("/faq")}
+            className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-full transition shadow-sm hover:shadow"
+          >
+            FAQ
+          </button>
+        </div>
         <AddSongs></AddSongs>
       </div>
       <h1 className="text-2xl font-bold">Highway Lyrics(Work in Progress)</h1>
