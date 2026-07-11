@@ -1,76 +1,59 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
 import React from "react";
 import "@/app/globals.css";
 
 export default function Login() {
   const router = useRouter();
-  const [randomQuestion, setRandomQuestion] = useState<string>("");
-
-  const questions = {
-    "What is the name of the garden where Jesus prayed before his crucifixion?":
-      "Gethsemane",
-    "What is the name of the river where Jesus was baptized?": "Jordan",
-    "What is the name of the mountain where Moses received the Ten Commandments?":
-      "Sinai",
-    "What is the name of the place where Jesus turned water into wine?": "Cana",
-    "What is the name of the place where Jesus was crucified?": "Golgotha",
-    "What was the name of the man who fell asleep and fell out of a window while Paul was preaching?":
-      "Eutychus",
-    "What specific type of bird brought food to Elijah by the Kerith Ravine?":
-      "Raven",
-    "What was the name of the elderly prophetess who recognized Jesus in the temple as a baby?":
-      "Anna",
-  };
-  type QuestionKey = keyof typeof questions;
-  const questionKeys = Object.keys(questions) as QuestionKey[];
-
-  useEffect(() => {
-    setRandomQuestion(
-      questionKeys[Math.floor(Math.random() * questionKeys.length)]
-    );
-  }, []);
+  const [error, setError] = useState<string | null>(null);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4 text-gray-800 font-sans w-full h-auto">
       <h1 className="text-2xl font-bold mb-4">Authenticate</h1>
-      <p className="text-gray-600 mb-6">Question: {randomQuestion}</p>
+      <p className="text-gray-600 mb-6">Please enter the password to continue.</p>
+      
+      {error && (
+        <p id="error-message" className="text-red-500 mb-4 font-semibold text-sm">
+          {error}
+        </p>
+      )}
+
       <input
         name="answer"
         id="answer"
-        type="text"
-        placeholder="Your answer"
-        className="mb-4 px-4 py-2 border border-gray-300 rounded w-64"
+        type="password"
+        placeholder="Password"
+        className="mb-4 px-4 py-2 border border-gray-300 rounded w-64 focus:outline-none focus:ring-2 focus:ring-blue-500"
       ></input>
+      
       <button
-        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
         onClick={() => {
-          // Logic for authentication goes here
-          const answer = (document.getElementById("answer") as HTMLInputElement)
-            .value;
+          setError(null);
+          const answer = (document.getElementById("answer") as HTMLInputElement).value;
+          
           (async () => {
-            const response = await fetch("/api/login", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({ userId: "testUser", password: answer }),
-            });
-            console.log("Login response status:", response.status);
-            if (!response.ok) {
-              console.error(`HTTP error! status: ${response.status}`);
-              router.push("/");
-            }
-            const data = await response.json();
-            console.log("Login response data:", data);
-            if (data.success) {
-              // Authentication successful
-              // alert("Authentication successful!");
-              router.push("/addSongs");
-            } else {
-              // Authentication failed
-              alert("Authentication failed. Please try again.");
-              router.push("/");
+            try {
+              const response = await fetch("/api/login", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ userId: "testUser", password: answer }),
+              });
+              
+              console.log("Login response status:", response.status);
+              const data = await response.json();
+              console.log("Login response data:", data);
+              
+              if (response.ok && data.success) {
+                router.push("/addSongs");
+              } else {
+                setError(data.message || "Incorrect password");
+              }
+            } catch (err) {
+              console.error(err);
+              setError("An unexpected error occurred. Please try again.");
             }
           })();
         }}

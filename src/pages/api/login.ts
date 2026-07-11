@@ -15,6 +15,11 @@ export default async function handler(
     return res.status(400).json({ message: "Missing credentials" });
   }
 
+  // Server-side validation: Password must match process.env.PASSWORD exactly (case-sensitive)
+  if (password !== process.env.PASSWORD) {
+    return res.status(401).json({ message: "Incorrect password", success: false });
+  }
+
   const sessionData = JSON.stringify({ userId, password });
   const encryptedSessionData = await encrypt(sessionData);
 
