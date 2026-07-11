@@ -19,7 +19,6 @@ export default function AddSongs() {
   const [duplicateSongs, setDuplicateSongs] = React.useState<UniqueSong[]>([]);
   const [title, setTitle] = React.useState("");
   const [lyrics, setLyrics] = React.useState("");
-  const [isExpanded, setIsExpanded] = React.useState(false);
   const submitSong = async (title: string, lyrics: string) => {
     const response = await fetch(`/api/newSong`, {
       method: "POST",
@@ -166,12 +165,7 @@ export default function AddSongs() {
           })}
         </ol>
         <div className="bg-slate-400 p-4 rounded-lg overflow-y-auto h-[calc(100vh-8rem)] text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)] text-white">
-          <Lyrics
-            id={currentSong}
-            filteredSongs={duplicateSongMap}
-            isExpanded={isExpanded}
-            setIsExpanded={setIsExpanded}
-          />
+          <Lyrics id={currentSong} filteredSongs={duplicateSongMap} />
         </div>
       </div>
       <button
