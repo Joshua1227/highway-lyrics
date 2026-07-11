@@ -6,6 +6,7 @@ import Search from "../components/search";
 import Lyrics from "../components/lyrics";
 import "@/app/globals.css";
 import AddSongs from "@/components/addSongs";
+import FAQ from "@/components/faq";
 
 export default function Home() {
   // TODO maybe convert songMap to a ref
@@ -101,6 +102,7 @@ export default function Home() {
           <Lyrics id={currentSong} filteredSongs={filteredSongs} />
         </div>
       </div>
+      <FAQ />
     </>
   );
 }
