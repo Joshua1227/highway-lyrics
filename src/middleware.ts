@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { decrypt } from "@/lib/session";
-import { cookies } from "next/headers";
 
 // 1. Specify protected and public routes
 const protectedRoutes = ["/addSongs"];
@@ -13,7 +12,7 @@ export default async function middleware(req: NextRequest) {
   //   const isPublicRoute = publicRoutes.includes(path);
 
   // 3. Decrypt the session from the cookie
-  const cookie = (await cookies()).get("highway-session")?.value;
+  const cookie = req.cookies.get("highway-session")?.value;
   const decryptedSession = cookie ? await decrypt(cookie) : null;
   try {
     const session = decryptedSession ? JSON.parse(decryptedSession) : null;
