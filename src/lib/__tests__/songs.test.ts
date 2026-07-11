@@ -1,4 +1,4 @@
-import { getAllSongs, getSongById, searchSongs, postNewSong } from "../songs";
+import { getAllSongs, getSongById, searchSongs, postNewSong, updateSong } from "../songs";
 import { vi } from 'vitest';
 
 // Mock the mongodb client promise
@@ -17,6 +17,7 @@ vi.mock("../mongodb", () => ({
         findOne: vi.fn().mockResolvedValue({ _id: "000000000000000000000001", title: "Test Song", lyrics: "Test Lyrics" }),
         aggregate: vi.fn().mockReturnThis(),
         insertOne: vi.fn().mockResolvedValue({ insertedId: "000000000000000000000003" }),
+        updateOne: vi.fn().mockResolvedValue({ matchedCount: 1, modifiedCount: 1 }),
       }),
     }),
   }),
@@ -44,5 +45,12 @@ describe("songs.ts unit tests", () => {
     const result = await postNewSong("New Title", "New Lyrics");
     expect(result.success).toBe(true);
     expect(result.insertedId).toBe("000000000000000000000003");
+  });
+
+  test("updateSong should update an existing song", async () => {
+    const result = await updateSong("000000000000000000000001", "Updated Title", "Updated Lyrics");
+    expect(result.success).toBe(true);
+    expect(result.matchedCount).toBe(1);
+    expect(result.modifiedCount).toBe(1);
   });
 });

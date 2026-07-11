@@ -7,12 +7,14 @@ export default function SongInputForm({
   setLyrics,
   title,
   lyrics,
+  submitButtonText = "Add Song",
 }: {
   handleFormSubmit: (title: string, content: string) => void;
   setTitle: (title: string) => void;
   setLyrics: (lyrics: string) => void;
   title: string;
   lyrics: string;
+  submitButtonText?: string;
 }) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,7 +46,7 @@ export default function SongInputForm({
         type="submit"
         className="mt-4 p-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
       >
-        Add Song
+        {submitButtonText}
       </button>
       <button
         className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 mt-4 ml-2"
