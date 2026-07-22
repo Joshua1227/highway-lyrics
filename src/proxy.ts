@@ -5,7 +5,7 @@ import { decrypt } from "@/lib/session";
 const protectedRoutes = ["/addSongs", "/editSong"];
 // const publicRoutes = ["/login", "/"];
 
-export default async function middleware(req: NextRequest) {
+export default async function proxy(req: NextRequest) {
   // 2. Check if the current route is protected or public
   const path = req.nextUrl.pathname;
   const isProtectedRoute = protectedRoutes.includes(path);
