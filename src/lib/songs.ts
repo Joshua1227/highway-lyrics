@@ -99,3 +99,25 @@ export async function postNewSong(title: string, lyrics: string) {
     return { success: false, error: "Failed to post new song" };
   }
 }
+
+export async function updateSong(songId: string, title: string, lyrics: string) {
+  try {
+    if (!songs) {
+      await init();
+    }
+    const result = await songs.updateOne(
+      { _id: new ObjectId(songId) },
+      {
+        $set: {
+          title,
+          lyrics,
+          updatedAt: new Date(),
+        },
+      }
+    );
+    return { success: true, matchedCount: result.matchedCount, modifiedCount: result.modifiedCount };
+  } catch (error) {
+    console.error("Error updating song:", error);
+    return { success: false, error: "Failed to update song" };
+  }
+}

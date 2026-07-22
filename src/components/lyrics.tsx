@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import { useRouter } from "next/router";
 import { Song } from "@/utils/models";
 
 const Lyrics: React.FC<{
   id: string;
   filteredSongs: Map<string, Song>;
 }> = ({ id, filteredSongs }) => {
+  const router = useRouter();
   const [copyClick, setCopyClick] = useState(false);
 
   if (!id) {
@@ -45,15 +47,30 @@ const Lyrics: React.FC<{
 
   const copyIcon = copyClick ? clickedCopyIcon : baseCopyIcon;
 
+  const editIcon = (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+      <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.83 18.982a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+    </svg>
+  );
+
   return (
     <div className="justify-between items-center p-4 max-w-2xl mt-8 text-white font-sans w-full h-auto">
-      <button
-        className="transition-all transition-normal transition-transform hover:scale-110 text-gray-700 hover:text-gray-900 transform hover:translate-x-1 hover:translate-y-1"
-        title="Copy Lyrics"
-        onClick={handleCopyClick}
-      >
-        {copyIcon}
-      </button>
+      <div className="flex space-x-4 mb-4">
+        <button
+          className="transition-all transition-normal transition-transform hover:scale-110 text-gray-700 hover:text-gray-900 transform hover:translate-x-1 hover:translate-y-1"
+          title="Copy Lyrics"
+          onClick={handleCopyClick}
+        >
+          {copyIcon}
+        </button>
+        <button
+          className="transition-all transition-normal transition-transform hover:scale-110 text-gray-700 hover:text-gray-900 transform hover:translate-x-1 hover:translate-y-1"
+          title="Edit Song"
+          onClick={() => router.push(`/editSong?songId=${encodeURIComponent(id)}`)}
+        >
+          {editIcon}
+        </button>
+      </div>
       <div className="text-lg font-mono whitespace-pre-wrap break-words p-4 font-sans w-full h-auto ">
         {songText.split("\n").map((line, index) => (
           <span key={index}>

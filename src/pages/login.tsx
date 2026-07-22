@@ -1,10 +1,8 @@
 import { useState } from "react";
-import { useRouter } from "next/router";
 import React from "react";
 import "@/app/globals.css";
 
 export default function Login() {
-  const router = useRouter();
   const [error, setError] = useState<string | null>(null);
 
   return (
@@ -47,7 +45,9 @@ export default function Login() {
               console.log("Login response data:", data);
               
               if (response.ok && data.success) {
-                router.push("/addSongs");
+                const searchParams = new URLSearchParams(window.location.search);
+                const redirectTo = searchParams.get("redirectTo") || "/addSongs";
+                window.location.href = redirectTo;
               } else {
                 setError(data.message || "Incorrect password");
               }

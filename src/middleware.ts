@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { decrypt } from "@/lib/session";
 
 // 1. Specify protected and public routes
-const protectedRoutes = ["/addSongs"];
+const protectedRoutes = ["/addSongs", "/editSong"];
 // const publicRoutes = ["/login", "/"];
 
 export default async function middleware(req: NextRequest) {
@@ -21,11 +21,15 @@ export default async function middleware(req: NextRequest) {
       isProtectedRoute &&
       (!session?.userId || session?.password !== process.env.PASSWORD)
     ) {
-      return NextResponse.redirect(new URL("/login", req.nextUrl));
+      const loginUrl = new URL("/login", req.nextUrl);
+      loginUrl.searchParams.set("redirectTo", req.nextUrl.pathname + req.nextUrl.search);
+      return NextResponse.redirect(loginUrl);
     }
   } catch (error) {
     console.error("Failed to parse session:", error);
-    return NextResponse.redirect(new URL("/login", req.nextUrl));
+    const loginUrl = new URL("/login", req.nextUrl);
+    loginUrl.searchParams.set("redirectTo", req.nextUrl.pathname + req.nextUrl.search);
+    return NextResponse.redirect(loginUrl);
   }
 
   // 5. Redirect to /dashboard if the user is authenticated

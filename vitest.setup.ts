@@ -2,6 +2,7 @@ import '@testing-library/jest-dom';
 import { vi } from 'vitest';
 
 // Mock global jest for vitest
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 (global as any).jest = vi;
 
 // Mock global clipboard for vitest

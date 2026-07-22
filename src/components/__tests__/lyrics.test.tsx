@@ -1,6 +1,13 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import Lyrics from "../lyrics";
 import { Song } from "@/utils/models";
+import { vi } from "vitest";
+
+vi.mock("next/router", () => ({
+  useRouter: () => ({
+    push: vi.fn(),
+  }),
+}));
 
 describe("Lyrics component", () => {
   test("should display 'No song selected' when id is missing", () => {

@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "@/app/globals.css";
 import { useRouter } from "next/router";
 import { findDuplicates } from "@/utils/findDuplicates";
-import { Song, UniqueSong } from "@/utils/models";
+import { Song } from "@/utils/models";
 import Lyrics from "@/components/lyrics";
 import SongInputForm from "@/components/songInputForm";
 
@@ -16,7 +16,6 @@ export default function AddSongs() {
   const [duplicateSongMap, setDuplicateSongMap] = React.useState(
     new Map<string, Song>()
   );
-  const [duplicateSongs, setDuplicateSongs] = React.useState<UniqueSong[]>([]);
   const [title, setTitle] = React.useState("");
   const [lyrics, setLyrics] = React.useState("");
   const submitSong = async (title: string, lyrics: string) => {
@@ -59,7 +58,15 @@ export default function AddSongs() {
     // setLyrics(content);
     findDuplicates(title + "\n" + content).then((duplicates) => {
       if (duplicates.length > 0) {
-        setDuplicateSongs(duplicates);
+        const localSongMap = new Map<string, Song>();
+        duplicates.forEach((song, index) => {
+          localSongMap.set(song._id, {
+            title: song.title,
+            lyrics: song.lyrics,
+            number: index + 1,
+          });
+        });
+        setDuplicateSongMap(localSongMap);
         setShowDuplicates(true);
         setShowEditor(false);
       } else {
@@ -75,21 +82,6 @@ export default function AddSongs() {
       }
     });
   };
-
-  useEffect(() => {
-    // Check if the user is authenticated
-    setDuplicateSongMap(() => {
-      const localSongMap = new Map<string, Song>();
-      duplicateSongs.forEach((song, index) => {
-        localSongMap.set(song._id, {
-          title: song.title,
-          lyrics: song.lyrics,
-          number: index + 1,
-        });
-      });
-      return localSongMap;
-    });
-  }, [duplicateSongs, showDuplicates]);
 
   const updateCurrentSong = (e: React.MouseEvent<HTMLButtonElement>) => {
     if ((e.target as HTMLButtonElement).value) {
