@@ -41,4 +41,37 @@ test.describe('Authentication', () => {
     await page.waitForURL('**/addSongs', { timeout: 10000 });
     await expect(page).toHaveURL(/.*addSongs/);
   });
+
+  test('should preserve redirect URL when trying to access protected page unauthenticated', async ({ page }) => {
+    // Try to access edit page directly
+    await page.goto('/editSong?songId=someInvalidId');
+
+    // Expect redirect to login page with correct redirectTo parameter
+    await expect(page).toHaveURL(/.*login\?redirectTo=.*/);
+    expect(page.url()).toContain('redirectTo=%2FeditSong%3FsongId%3DsomeInvalidId');
+
+    // Fill correct password and authenticate
+    await page.fill('input[name="answer"]', process.env.PASSWORD || 'HeartOfWorship');
+    await page.click('button:has-text("Authenticate")');
+
+    // Should successfully navigate back to the original editSong URL
+    await page.waitForURL('**/editSong?songId=someInvalidId', { timeout: 10000 });
+    await expect(page).toHaveURL(/.*editSong\?songId=someInvalidId/);
+  });
+
+  test('should preserve redirect URL when trying to access addSongs unauthenticated', async ({ page }) => {
+    // Try to access addSongs page directly
+    await page.goto('/addSongs');
+
+    // Expect redirect to login page with correct redirectTo parameter
+    await expect(page).toHaveURL(/.*login\?redirectTo=%2FaddSongs/);
+
+    // Fill correct password and authenticate
+    await page.fill('input[name="answer"]', process.env.PASSWORD || 'HeartOfWorship');
+    await page.click('button:has-text("Authenticate")');
+
+    // Should successfully navigate back to the /addSongs URL
+    await page.waitForURL('**/addSongs', { timeout: 10000 });
+    await expect(page).toHaveURL(/.*addSongs/);
+  });
 });

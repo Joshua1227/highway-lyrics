@@ -47,7 +47,8 @@ export default function Login() {
               console.log("Login response data:", data);
               
               if (response.ok && data.success) {
-                router.push("/addSongs");
+                const redirectTo = (router.query.redirectTo as string) || "/addSongs";
+                router.push(redirectTo);
               } else {
                 setError(data.message || "Incorrect password");
               }
