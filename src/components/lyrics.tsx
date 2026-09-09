@@ -5,14 +5,14 @@ import { useState } from "react";
 interface LyricsProps {
   id: string;
   filteredSongs: Map<string, Song>;
-  isLyricsExpanded: boolean;
-  toggleLyricsExpansion: () => void;
+  isLyricsExpanded?: boolean;
+  toggleLyricsExpansion?: () => void;
 }
 
 export default function Lyrics({
   id,
   filteredSongs,
-  isLyricsExpanded,
+  isLyricsExpanded = false,
   toggleLyricsExpansion,
 }: LyricsProps) {
   const [copyClick, setCopyClick] = useState(false);
@@ -121,22 +121,24 @@ export default function Lyrics({
   return (
     <div className="justify-between items-center p-4 max-w-2xl mt-8 text-white font-sans w-full h-auto">
       <div className="flex items-center">
+        {toggleLyricsExpansion && (
+          <button
+            className="transition hover:scale-110 text-gray-700 hover:text-gray-900 transform hover:translate-x-1 hover:translate-y-1 mr-2"
+            title={isLyricsExpanded ? "Collapse Lyrics" : "Expand Lyrics"}
+            onClick={toggleLyricsExpansion}
+          >
+            {currentIcon}
+          </button>
+        )}
         <button
-          className="transition-all transition-normal transition-transform hover:scale-110 text-gray-700 hover:text-gray-900 transform hover:translate-x-1 hover:translate-y-1 mr-2"
-          title={isLyricsExpanded ? "Collapse Lyrics" : "Expand Lyrics"}
-          onClick={toggleLyricsExpansion}
-        >
-          {currentIcon}
-        </button>
-        <button
-          className="transition-all transition-normal transition-transform hover:scale-110 text-gray-700 hover:text-gray-900 transform hover:translate-x-1 hover:translate-y-1"
+          className="transition hover:scale-110 text-gray-700 hover:text-gray-900 transform hover:translate-x-1 hover:translate-y-1"
           title="Copy Lyrics"
           onClick={handleCopyClick}
         >
           {copyIcon}
         </button>
       </div>
-      <div className="text-lg font-mono whitespace-pre-wrap break-words p-4 font-sans w-full h-auto ">
+      <div className="text-lg whitespace-pre-wrap break-words p-4 font-sans w-full h-auto ">
         {songText.split("\n").map((line, index) => (
           <span key={index}>
             {line}

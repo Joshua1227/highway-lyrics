@@ -15,6 +15,7 @@ export default function Home() {
   const [songMap, setSongMap] = useState(new Map<string, Song>());
   const [filteredSongs, setFilteredSongs] = useState(new Map<string, Song>());
   const [currentSong, setCurrentSong] = useState("");
+  const [isLyricsExpanded, setIsLyricsExpanded] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -75,6 +76,10 @@ export default function Home() {
     }
   };
 
+  const toggleLyricsExpansion = () => {
+    setIsLyricsExpanded((prev) => !prev);
+  };
+
   return (
     <>
       <div className="flex justify-between items-center mb-4 px-4 py-2 bg-gray-100 dark:bg-gray-800">
@@ -90,8 +95,8 @@ export default function Home() {
         <AddSongs></AddSongs>
       </div>
       <h1 className="text-2xl font-bold">Highway Lyrics</h1>
-      <div className="grid grid-cols-2 gap-2">
-        <ol className="bg-stone-300 list-inside list-none text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)] overflow-y-auto h-[calc(100vh-8rem)] p-4 rounded-lg">
+      <div className={`grid ${isLyricsExpanded ? "grid-cols-1 gap-0" : "grid-cols-2 gap-2"}`}>
+        <ol className={`bg-stone-300 list-inside list-none text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)] overflow-y-auto h-[calc(100vh-8rem)] p-4 rounded-lg ${isLyricsExpanded ? "hidden" : ""}`}>
           {Array.from(filteredSongs.entries()).map((entry) => {
             const [key, value] = entry;
             return (
@@ -108,7 +113,12 @@ export default function Home() {
           })}
         </ol>
         <div className="bg-slate-400 p-4 rounded-lg overflow-y-auto h-[calc(100vh-8rem)] text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)] text-white">
-          <Lyrics id={currentSong} filteredSongs={filteredSongs} />
+          <Lyrics
+            id={currentSong}
+            filteredSongs={filteredSongs}
+            isLyricsExpanded={isLyricsExpanded}
+            toggleLyricsExpansion={toggleLyricsExpansion}
+          />
         </div>
       </div>
     </>
