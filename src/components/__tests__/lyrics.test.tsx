@@ -24,6 +24,14 @@ describe("Lyrics component", () => {
     expect(screen.getByText("Test Lyrics")).toBeInTheDocument();
   });
 
+  test("should show an edit button when a song is displayed", () => {
+    const mockSongs = new Map<string, Song>([
+      ["1", { title: "Test Song", lyrics: "Test Lyrics", number: 1 }],
+    ]);
+    render(<Lyrics id="1" filteredSongs={mockSongs} />);
+    expect(screen.getByTitle("Edit Song")).toBeInTheDocument();
+  });
+
   test("should toggle copy icon when clicked", () => {
     const mockSongs = new Map<string, Song>([
       ["1", { title: "Test Song", lyrics: "Test Lyrics", number: 1 }],
