@@ -53,6 +53,10 @@ describe("Lyrics component", () => {
     expect(lyricsContainer).toHaveClass("text-lg");
     expect(lyricsContainer).not.toHaveClass("text-center");
     expect(lyricsContainer).not.toHaveClass("text-2xl");
+
+    // The outer container keeps a constrained max width when collapsed
+    const outerContainer = lyricsContainer?.parentElement;
+    expect(outerContainer).toHaveClass("max-w-2xl");
   });
 
   test("should increase font size and center-align lyrics when expanded", () => {
@@ -64,5 +68,9 @@ describe("Lyrics component", () => {
     expect(lyricsContainer).toHaveClass("text-2xl");
     expect(lyricsContainer).toHaveClass("text-center");
     expect(lyricsContainer).not.toHaveClass("text-lg");
+
+    // The outer container expands to full width (no max-width) when expanded
+    const outerContainer = lyricsContainer?.parentElement;
+    expect(outerContainer).not.toHaveClass("max-w-2xl");
   });
 });

@@ -138,7 +138,11 @@ export default function Lyrics({
   );
 
   return (
-    <div className="justify-between items-center p-4 max-w-2xl mt-8 text-white font-sans w-full h-auto">
+    <div
+      className={`justify-between items-center p-4 mt-8 text-white font-sans w-full h-auto ${
+        isLyricsExpanded ? "" : "max-w-2xl"
+      }`}
+    >
       <div className="flex items-center">
         {toggleLyricsExpansion && (
           <button
