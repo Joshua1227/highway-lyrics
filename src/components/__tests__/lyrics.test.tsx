@@ -43,4 +43,26 @@ describe("Lyrics component", () => {
     // Since we can't easily check for the SVG change, this is a basic interaction test.
     expect(button).toBeDefined();
   });
+
+  test("should render lyrics with default font size and left alignment when not expanded", () => {
+    const mockSongs = new Map<string, Song>([
+      ["1", { title: "Test Song", lyrics: "Test Lyrics", number: 1 }],
+    ]);
+    render(<Lyrics id="1" filteredSongs={mockSongs} />);
+    const lyricsContainer = screen.getByText("Test Lyrics").parentElement;
+    expect(lyricsContainer).toHaveClass("text-lg");
+    expect(lyricsContainer).not.toHaveClass("text-center");
+    expect(lyricsContainer).not.toHaveClass("text-2xl");
+  });
+
+  test("should increase font size and center-align lyrics when expanded", () => {
+    const mockSongs = new Map<string, Song>([
+      ["1", { title: "Test Song", lyrics: "Test Lyrics", number: 1 }],
+    ]);
+    render(<Lyrics id="1" filteredSongs={mockSongs} isLyricsExpanded />);
+    const lyricsContainer = screen.getByText("Test Lyrics").parentElement;
+    expect(lyricsContainer).toHaveClass("text-2xl");
+    expect(lyricsContainer).toHaveClass("text-center");
+    expect(lyricsContainer).not.toHaveClass("text-lg");
+  });
 });

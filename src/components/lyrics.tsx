@@ -166,7 +166,13 @@ export default function Lyrics({
           {editIcon}
         </button>
       </div>
-      <div className="text-lg whitespace-pre-wrap break-words p-4 font-sans w-full h-auto ">
+      <div
+        className={`whitespace-pre-wrap break-words p-4 font-sans w-full h-auto ${
+          isLyricsExpanded
+            ? "text-center text-2xl"
+            : "text-lg"
+        }`}
+      >
         {songText.split("\n").map((line, index) => (
           <span key={index}>
             {line}
